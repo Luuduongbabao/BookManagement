@@ -1,0 +1,93 @@
+﻿@using BookManagement.Models
+@model IEnumerable<Book>
+
+<div class="banner">
+    <img src="~/Images/banner.png" alt="Book Promotion 📢">
+</div>
+
+<div class="container">
+    <aside class="sidebar">
+        <h3>📂 Category</h3>
+        <ul>
+            <li><a href="#" onclick="setCategory(null); return false;">All</a></li>
+            @if (ViewBag.Categories != null)
+            {
+                foreach (var category in ViewBag.Categories)
+                {
+                    <li>
+                        <a href="#" onclick="setCategory(@category.CategoryID); return false;">
+                            @category.CategoryName
+                        </a>
+                    </li>
+                }
+            }
+            else
+            {
+            <li>No categories available!</li>
+            }
+        </ul>
+    </aside>
+
+    <div class="main-content">
+        <div class="sort-container">
+            <label for="sortOrder">Sort:</label>
+            <select id="sortOrder" name="sortOrder" onchange="updateSort()">
+                <option value="">Default</option>
+                <option value="price_asc">Low to High</option>
+                <option value="price_desc">High to Low</option>
+                <option value="name_asc">Name A-Z</option>
+                <option value="name_desc">Name Z-A</option>
+            </select>
+        </div>
+        <h2>📦 Book List</h2>
+        <div id="bookList">
+            @Html.Partial("List", Model)
+        </div>
+
+        <h2>📦 Product List</h2>
+        <div id="productList">
+            @Html.Partial("ProductList", ViewBag.Products as IEnumerable<Product>)
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    var selectedCategory = null;
+
+    function setCategory(categoryId) {
+        selectedCategory = categoryId;
+        loadData();
+    }
+
+    function updateSort() {
+        loadData();
+    }
+
+    function loadData() {
+    var sortOrder = $("#sortOrder").val();  // Lấy giá trị sắp xếp
+    $.ajax({
+        url: '@Url.Action("List", "Book")',
+        type: 'GET',
+        data: { categoryId: selectedCategory, sortOrder: sortOrder },
+        success: function (data) {
+            $("#bookList").html(data);
+        },
+        error: function () {
+            alert("Lỗi khi tải dữ liệu sách!");
+        }
+    });
+
+    $.ajax({
+        url: '@Url.Action("ProductList", "Book")',
+        type: 'GET',
+        data: { sortOrder: sortOrder }, // Truyền sortOrder cho sản phẩm
+        success: function (data) {
+            $("#productList").html(data);
+        },
+        error: function () {
+            alert("Lỗi khi tải dữ liệu sản phẩm!");
+        }
+    });
+}
+</script>

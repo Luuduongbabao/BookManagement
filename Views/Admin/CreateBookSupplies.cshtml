@@ -1,0 +1,71 @@
+﻿@model BookManagement.Models.BookSupply
+
+@{
+    ViewBag.Title = "Create Book Supply";
+}
+
+<h2>
+    <a href="@Url.Action("ListBookSupplies", "Admin")" class="btn btn-secondary mb-3">
+        <i class="fas fa-arrow-left"></i> Back
+    </a>
+</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <hr />
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Supply_id, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(m => m.Supply_id, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(m => m.Supply_id)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.supplier_id, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.supplier_id, (SelectList)ViewBag.Suppliers, "-- Choose Supplier --", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.supplier_id)
+        </div>
+    </div>
+
+    @Html.LabelFor(m => m.book_id, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.DropDownListFor(m => m.book_id, (SelectList)ViewBag.Books, "-- Choose Supplier --", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.book_id)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(m => m.quantity, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(m => m.quantity)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.price, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(m => m.price, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(m => m.price)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.DateSuppliers, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.DateSuppliers, new { @class = "form-control", value = Model.DateSuppliers })
+            @Html.ValidationMessageFor(m => m.DateSuppliers)
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-primary" />
+            @Html.ActionLink("Back to List", "ListBookSupplies", null, new { @class = "btn btn-link" })
+        </div>
+    </div>
+</div>
+}

@@ -1,0 +1,91 @@
+﻿@model List<BookManagement.Models.Order>
+@{
+    ViewBag.Title = "List of Orders";
+}
+
+<h2 class="text-center">Danh sách đơn hàng</h2>
+<h2>
+    <a href="@Url.Action("AdminDashboard", "Admin")" class="btn btn-secondary mb-3">
+        <i class="fas fa-arrow-left"></i> Back
+    </a>
+</h2>
+<div class="mb-3">
+    <input type="text" id="searchBox" class="form-control" placeholder="🔍 Search" >
+</div>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Customer Name</th>
+            <th>Status</th>
+            <th>Payment Method</th>
+            <th>Shipping Address</th>
+            <th>Order Date</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody id="orderTable">
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.OrderID</td>
+                <td>@(order.Customer != null ? order.Customer.CusName : "N/A")</td>
+                <td>
+                    <span class="badge @(order.status == "Completed" ? "bg-success" : order.status == "Pending" ? "bg-warning" : "bg-danger")">
+                        @order.status
+                    </span>
+                </td>
+                <td>@order.payment_method</td>
+                <td>@order.ShippingAddress</td>
+                <td>
+                    @(order.OrderDate.HasValue
+        ? TimeZoneInfo.ConvertTimeFromUtc(order.OrderDate.Value,
+            TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"))
+            .ToString("dd/MM/yyyy")
+        : "N/A")
+                </td>
+                <td>@(order.TotalOrderPrice != null ? order.TotalOrderPrice.Value.ToString("N0") + " VNĐ" : "0 VNĐ")</td>
+                @*<td>
+                        <a href="@Url.Action("OrderDetails", "Admin", new { id = order.OrderID })" class="btn btn-info btn-sm">
+                            📄 Xem
+                        </a>
+                    </td>*@
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    document.getElementById("searchBox").addEventListener("keyup", function () {
+        var keyword = this.value.toLowerCase();
+        var rows = document.querySelectorAll("#orderTable tr");
+
+        rows.forEach(row => {
+            var orderId = row.cells[0].textContent.toLowerCase();
+            var customerName = row.cells[1].textContent.toLowerCase();
+            row.style.display = (orderId.includes(keyword) || customerName.includes(keyword)) ? "" : "none";
+        });
+    });
+</script>
+<style>
+    table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+</style>

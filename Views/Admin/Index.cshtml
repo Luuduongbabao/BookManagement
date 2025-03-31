@@ -1,0 +1,220 @@
+﻿@using BookManagement.Models
+@model IEnumerable<Book>
+@{
+    ViewBag.Title = "List Books";
+}
+@if (TempData["OutOfStockBooks"] != null)
+{
+    var outOfStockBooks = Session["OutOfStockBooks"] as List<int>;
+    if (outOfStockBooks != null && outOfStockBooks.Count > 0)
+    {
+        <div class="alert alert-warning">
+            <strong>⚠️ Warning:</strong> Some books are running out of stock:
+            <ul>
+                @foreach (var bookId in outOfStockBooks)
+                {
+                    <li>Book ID: @bookId less than 5.</li>
+                }
+            </ul>
+        </div>
+    }
+}
+
+<h2>
+    <a href="@Url.Action("AdminDashboard", "Admin")" class="btn btn-secondary mb-3">
+        <i class="fas fa-arrow-left"></i> Back
+    </a>
+</h2>
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="mb-3 text-primary"><i class="fas fa-book"></i> List Books</h2>
+        </div>
+
+        <!-- Thanh tìm kiếm -->
+        <div class="col-md-4 mb-3">
+            <input type="text" class="form-control" id="searchBox" placeholder="🔍 Search..." onkeyup="searchBook()">
+        </div>
+
+        <!-- Nút thêm sách -->
+        <div class="col-md-8 text-end mb-3">
+            <a href="@Url.Action("Create")" class="btn btn-success">
+                <i class="fas fa-plus"></i> Add
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-body">
+            <table class="table table-hover" id="bookTable">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>Book ID</th>
+                        <th>📚 Name</th>
+                        <th>✍️ Author</th>
+                        <th>🏢 Publisher</th>
+                        <th>💰 Price</th>
+                        <th>📦 Stock</th>
+                        <th>📂 Category</th>
+                        <th>⚙️ Image</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    @foreach (var book in Model)
+                    {
+                        <tr>
+                            <td><strong>@book.BookID</strong></td>
+                            <td>@book.title</td>
+                            <td>@book.author</td>
+                            <td>@book.publisher</td>
+                            <td><span class="text-success fw-bold">@book.price.ToString("N0") VNĐ</span></td>
+                            <td>
+                                @{
+                                    var stockClass = book.stock == 0 ? "bg-danger" : (book.stock < 10 ? "bg-warning" : "bg-success");
+                                    var stockText = book.stock == 0 ? "Out of stock" : (book.stock < 10 ? "Almost gone" : "In stock");
+                                }
+                                <span class="badge @stockClass">@book.stock - @stockText</span>
+                            </td>
+                            <td>@(book.Category != null ? book.Category.CategoryName : "No category")</td>
+
+                            <td>
+                                @if (!string.IsNullOrEmpty(book.Book_Image))
+                                {
+                                    <img src="@Url.Content("~/"+book.Book_Image)" alt="@book.title" width="150" height="200" />
+
+                                }
+                                else
+                                {
+                            <span class="text-muted">No image</span>
+                                }
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Edit", "Admin", new { id = book.BookID.Trim() })">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Tìm kiếm sách -->
+<script>
+    function searchBook() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("searchBox");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("bookTable");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 1; i < tr.length; i++) {
+            let match = false;
+            let columns = [0, 1, 2, 3, 6]; 
+            for (let col of columns) {
+                td = tr[i].getElementsByTagName("td")[col];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        match = true;
+                        break;
+                    }
+                }
+            }
+            tr[i].style.display = match ? "" : "none";
+        }
+    }
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+    }
+    h2 {
+        font-size: 24px;
+        font-weight: bold;
+        color: #007bff;
+    }
+
+    #searchBox {
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-size: 14px;
+        border: 1px solid #ced4da;
+        transition: all 0.3s ease;
+    }
+
+        #searchBox:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+        }
+    /* Style cho bảng sách */
+    .table-books {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+        .table-books thead {
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+        }
+
+        .table-books th, .table-books td {
+            padding: 10px;
+            vertical-align: middle;
+        }
+    /* Badge số lượng */
+    .badge {
+        font-size: 14px;
+        font-weight: bold;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+
+    .bg-success {
+        background-color: #28a745 !important;
+        color: white;
+    }
+
+    .bg-danger {
+        background-color: #dc3545 !important;
+        color: white;
+    }
+
+    /* Style cho nút thao tác */
+    .btn-sm {
+        padding: 5px 10px;
+        font-size: 14px;
+        border-radius: 5px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border: none;
+    }
+
+        .btn-danger:hover {
+            background-color: #bd2130;
+        }
+
+    /* Hiệu ứng hover cho hàng bảng */
+    .table-hover tbody tr:hover {
+        background-color: #f1f1f1;
+        cursor: pointer;
+    }
+</style>

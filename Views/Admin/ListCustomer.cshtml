@@ -1,0 +1,108 @@
+﻿@using BookManagement.Models
+@model IEnumerable<BookManagement.Models.Customer>
+
+@{
+    ViewBag.Title = "List of Customers";
+}
+<h2>
+    <a href="@Url.Action("AdminDashboard", "Admin")" class="btn btn-secondary mb-3">
+        <i class="fas fa-arrow-left"></i> Back
+    </a>
+</h2>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="mb-3 text-primary"><i class="fas fa-book"></i>List of Customers</h2>
+        </div>
+
+        <!-- Thanh tìm kiếm -->
+        <div class="col-md-4 mb-3">
+            <input type="text" class="form-control" id="searchBox" placeholder="🔍 Search..." onkeyup="searchBook()">
+        </div>
+
+        <!-- Nút thêm sách -->
+        <a href="@Url.Action("CreateCustomer")" class="btn btn-success">
+            <i class="fas fa-plus"></i> Add
+        </a>
+    </div>
+
+    <!-- Bảng khách hàng -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>👤 Full Name</th>
+                    <th>📧 Email</th>
+                    <th>📞 Phone</th>
+                    <th>🏠 Address</th>
+                    <th>🎂 DOB</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var customer in Model)
+                {
+                    <tr class="align-middle customer-row">
+                        <td>@customer.CusID</td>
+                        <td>@customer.CusName</td>
+                        <td>@customer.CusEmail</td>
+                        <td>@customer.CusPhone</td>
+                        <td>@customer.CusAddress</td>
+                        <td>@customer.CusDob.ToShortDateString()</td>
+                        <td>
+                            <a href="@Url.Action("EditCustomer", "Admin", new { id = customer.CusID.Trim() })" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Script lọc khách hàng -->
+<script>
+    document.getElementById('searchBox').addEventListener('keyup', function () {
+        let searchText = this.value.toLowerCase();
+        let rows = document.querySelectorAll("#customerTable tbody tr");
+
+        rows.forEach(row => {
+            let name = row.children[1].innerText.toLowerCase();
+            let email = row.children[2].innerText.toLowerCase();
+            let phone = row.children[3].innerText.toLowerCase();
+
+            row.style.display = (name.includes(searchText) || email.includes(searchText) || phone.includes(searchText)) ? "" : "none";
+        });
+    });
+</script>
+<script>
+    function reloadCustomerList() {
+        $.get("@Url.Action("ListCustomer", "Admin")", function (data) {
+            $("#customerTable").html($(data).find("#customerTable").html());
+        });
+    }
+</script>
+<style>
+    table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+</style>

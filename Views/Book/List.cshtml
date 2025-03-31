@@ -1,0 +1,68 @@
+﻿@using BookManagement.Models
+@model IEnumerable<Book>
+
+<div class="book-grid">
+    @foreach (var book in Model)
+    {
+        <div class="book-card">
+            <img src="@book.Book_Image" alt="Book Image @book.title" class="book-image" />
+            <h4>@book.title</h4>
+            <p>Tác giả: @book.author</p>
+            <p>Giá: @book.price.ToString("N0") đ</p>
+            <a href="@Url.Action("Detail", "Book", new { id = book.BookID.Trim() })">View details</a>
+
+            @if (Session["UserName"] != null)
+            {
+                <a href="@Url.Action("Checkout", "Order", new { id = book.BookID })" class="buy-btn">Buy now</a>
+                <a href="@Url.Action("AddToCartBook", "Cart", new { id = book.BookID.Trim(), type = "Book" })" class="cart-btn">🛒</a>
+            }
+            else
+            {
+        <a href="@Url.Action("Login", "Account")" class="buy-btn">Buy now</a>
+                <a href="@Url.Action("Login", "Account")" class="cart-btn">🛒</a>
+            }
+        </div>
+    }
+</div>
+
+<style>
+    .book-card {
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin: 10px;
+        text-align: center;
+        border-radius: 8px;
+        box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .book-image {
+        width: 150px;
+        height: 200px;
+        object-fit: cover;
+        margin-bottom: 10px;
+        border-radius: 5px;
+    }
+
+    .btn-group {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+    }
+
+    .buy-btn, .cart-btn {
+        display: inline-block;
+        padding: 8px 12px;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-top: 5px;
+    }
+
+    .buy-btn {
+        background: #ff5f5f;
+    }
+
+    .cart-btn {
+        background: #ffa500;
+    }
+</style>

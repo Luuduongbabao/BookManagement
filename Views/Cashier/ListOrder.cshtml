@@ -1,0 +1,92 @@
+﻿@model List<BookManagement.Models.Order>
+
+@{
+    ViewBag.Title = "List of Orders";
+}
+
+<h2>Danh Sách Đơn Hàng</h2>
+
+<form action="@Url.Action("ListOrder", "Cashier")" method="get" class="mb-3">
+    <input type="text" name="searchQuery" class="form-control d-inline-block w-25" placeholder="Search" value="@Request.QueryString["searchQuery"]" />
+
+    <input type="date" name="dateFilter" class="form-control d-inline-block w-25" value="@Request.QueryString["dateFilter"]" />
+
+    <button type="submit" class="btn btn-primary">🔍 Search</button>
+    <a href="@Url.Action("ListOrder", "Cashier")" class="btn btn-secondary">🔄 Reset</a>
+</form>
+<div class="mb-3">
+    <a href="@Url.Action("ListOrder", "Cashier", new { statusFilter = "Pending" })" class="btn btn-warning">🟡 Pending Order</a>
+    <a href="@Url.Action("ListOrder", "Cashier", new { statusFilter = "Completed" })" class="btn btn-success">✅ Order Completed</a>
+    <a href="@Url.Action("ListOrder", "Cashier", new { statusFilter = "Cancelled" })" class="btn btn-danger">❌ Order canceled</a>
+    <a href="@Url.Action("ListTransaction", "Cashier")" class="btn btn-info">📄View All Transactions</a>
+</div>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Customer ID</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Payment method</th>
+            <th>Shipping Address</th>
+            <th>Order Date</th>
+            <th>Cashier confirmation</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.OrderID</td>
+                <td>@order.CusID</td>
+                <td>@order.TotalOrderPrice</td>
+                <td>@order.status</td>
+                <td>@order.payment_method</td>
+                <td>@order.ShippingAddress</td>
+                <td>@(order.OrderDate.HasValue ? order.OrderDate.Value.ToString("dd/MM/yyyy") : "N/A")</td>
+                <td>
+                    @if (order.status != "Completed")
+                    {
+                        <form action="@Url.Action("ConfirmOrder", "Cashier")" method="post">
+                            <input type="hidden" name="orderId" value="@order.OrderID" />
+                            <button type="submit" class="btn btn-success">Confirm</button>
+                        </form>
+
+                        <form action="@Url.Action("ConfirmCancelOrder", "Cashier")" method="post">
+                            <input type="hidden" name="orderId" value="@order.OrderID" />
+                            <button type="submit" class="btn btn-danger">Cancel</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-info">@TempData["Message"]</div>
+}
+
+<style>
+    table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+</style>

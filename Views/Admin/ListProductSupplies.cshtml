@@ -1,0 +1,77 @@
+﻿@model IEnumerable<BookManagement.Models.ProductSupply>
+
+@{
+    ViewBag.Title = "List of Product Supplies";
+}
+
+<h2>
+    <a href="@Url.Action("ListSuppliers", "Admin")" class="btn btn-secondary mb-3">
+        <i class="fas fa-arrow-left"></i> Back
+    </a>
+</h2>
+<div class="col-md-4 mb-3">
+    <input type="text" class="form-control" id="searchBox" placeholder="🔍 Search ..." onkeyup="searchBook()">
+</div>
+<div class="add-supplier">
+    <a href="@Url.Action("CreateProductSupplies", "Admin")" class="btn btn-primary">Add new</a>
+</div>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ProductSupplies ID</th>
+            <th>Sipplier ID</th>
+            <th>Product ID</th>
+            <th>Stock</th>
+            <th>Price</th>
+            <th>Supply Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var supply in Model)
+        {
+            <tr>
+                <td>@supply.Supply_id</td>
+                <td>@supply.Supplier_id</td>
+                <td>@supply.productID</td>
+                <td>@supply.quantity</td>
+                <td>@supply.price</td>
+                <td>@(supply.DateSuppliers.HasValue ? supply.DateSuppliers.Value.ToString("dd/MM/yyyy") : "N/A")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    document.getElementById('searchBox').addEventListener('input', function () {
+        let searchText = this.value.trim().toLowerCase();
+        let rows = document.querySelectorAll("table tbody tr");
+
+        rows.forEach(row => {
+            let match = Array.from(row.children).some(cell =>
+                cell.innerText.trim().toLowerCase().includes(searchText)
+            );
+            row.style.display = match ? "" : "none";
+        });
+    });
+</script>
+<style>
+    table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+</style>

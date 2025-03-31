@@ -1,0 +1,68 @@
+﻿@model BookManagement.Models.Supplier
+
+@{
+    ViewBag.Title = "Edit Supplier";
+}
+
+<h2>Edit Supplier</h2>
+<h2>
+    <a href="@Url.Action("ListSuppliers", "Admin")" class="btn btn-secondary mb-3">
+        <i class="fas fa-arrow-left"></i> Back
+    </a>
+</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Supplier</h4>
+        <hr />
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.supplier_id, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.supplier_id, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(m => m.supplier_id)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.supplier_name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.supplier_name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.supplier_name)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.supplier_email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.supplier_email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.supplier_email)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.phone, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.phone, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.phone)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.address, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.address, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.address)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                @Html.ActionLink("Back to List", "ListSuppliers", null, new { @class = "btn btn-link" })
+            </div>
+        </div>
+    </div>
+}

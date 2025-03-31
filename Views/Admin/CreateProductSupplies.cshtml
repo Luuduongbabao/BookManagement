@@ -1,0 +1,42 @@
+﻿@model BookManagement.Models.ProductSupply
+
+@{
+    ViewBag.Title = "Add Product Supplier";
+}
+
+<h2>
+    <a href="@Url.Action("ListProductSupplies", "Admin")" class="btn btn-secondary mb-3">
+        <i class="fas fa-arrow-left"></i>Back
+    </a>
+</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        @Html.LabelFor(m => m.Supply_id, "Supplier")
+        @Html.DropDownListFor(m => m.Supplier_id, (SelectList)ViewBag.Suppliers, "Chọn Nhà Cung Cấp", new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.productID, "Product")
+        @Html.DropDownListFor(m => m.productID, (SelectList)ViewBag.Products, "Chọn Sản Phẩm", new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.quantity, "Stock")
+        @Html.TextBoxFor(m => m.quantity, new { @class = "form-control", type = "number" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.price, "Price")
+        @Html.TextBoxFor(m => m.price, new { @class = "form-control", type = "number" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.DateSuppliers, "Supply Date")
+        @Html.TextBoxFor(m => m.DateSuppliers, new { @class = "form-control", type = "date" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a href="@Url.Action("ListProductSupplies", "Admin")" class="btn btn-secondary">Cancel</a>
+}

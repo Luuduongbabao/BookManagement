@@ -1,0 +1,60 @@
+﻿@model List<BookManagement.Models.Cashier>
+
+@{
+    ViewBag.Title = "List of Cashiers";
+}
+
+<h2>Danh Sách Thu Ngân</h2>
+<h2>
+    <a href="@Url.Action("AdminDashboard", "Admin")" class="btn btn-secondary mb-3">
+        <i class="fas fa-arrow-left"></i> Back
+    </a>
+</h2>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Phone</th>
+            <th>Password</th>
+            <th>DOB</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var cashier in Model)
+        {
+            <tr>
+                <td>@cashier.CashierID</td>
+                <td>@cashier.CashierName</td>
+                <td>@cashier.CashierEmail</td>
+                <td>@cashier.CashierAddress</td>
+                <td>@cashier.CashierPhone</td>
+                <td>@cashier.CashierPassword</td>
+                <td>@cashier.CashierDOB</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<style>
+    table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+</style>

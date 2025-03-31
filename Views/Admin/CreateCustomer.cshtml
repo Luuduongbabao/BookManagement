@@ -1,0 +1,74 @@
+﻿@model BookManagement.Models.Customer
+
+@{
+    ViewBag.Title = "Add New Customer";
+}
+
+<div class="container mt-4">
+    <h2>
+        <a href="@Url.Action("ListCustomer", "Admin")" class="btn btn-secondary mb-3">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+    </h2>
+    @using (Html.BeginForm("CreateCustomer", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="mb-3">
+            <label class="form-label">ID</label>
+            @Html.TextBoxFor(model => model.CusID, new { @class = "form-control", placeholder = "Enter customer ID", required = "required" })
+            @Html.ValidationMessageFor(model => model.CusID, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">👤 FullName</label>
+            @Html.TextBoxFor(model => model.CusName, new { @class = "form-control", placeholder = "Enter fullname", required = "required" })
+            @Html.ValidationMessageFor(model => model.CusName, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">📧 Email</label>
+            @Html.TextBoxFor(model => model.CusEmail, new { @class = "form-control", placeholder = "Enter email", type = "email", required = "required" })
+            @Html.ValidationMessageFor(model => model.CusEmail, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">🏠Address</label>
+            @Html.TextBoxFor(model => model.CusAddress, new { @class = "form-control", placeholder = "Enter address", required = "required" })
+            @Html.ValidationMessageFor(model => model.CusAddress, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">📞 Phone</label>
+            @Html.TextBoxFor(model => model.CusPhone, new { @class = "form-control", placeholder = "Enter phone", required = "required" })
+            @Html.ValidationMessageFor(model => model.CusPhone, "", new { @class = "text-danger" })
+        </div>
+
+
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            @Html.TextBoxFor(model => model.CusPassword, new { @class = "form-control", placeholder = "Enter password", required = "required" })
+            @Html.ValidationMessageFor(model => model.CusPassword, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">🎂 DOB</label>
+            @Html.TextBoxFor(model => model.CusDob, new { @class = "form-control", type = "date", required = "required" })
+            @Html.ValidationMessageFor(model => model.CusDob, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <a href="@Url.Action("ListCustomer", "Admin")" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Cancel
+            </a>
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-save"></i> Add new customer
+            </button>
+        </div>
+    }
+</div>
+
+<style>
+    .container {
+        max-width: 600px;
+    }
+</style>

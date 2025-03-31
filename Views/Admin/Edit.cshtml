@@ -1,0 +1,75 @@
+﻿@using BookManagement.Models
+@model Book
+@{
+    ViewBag.Title = "Edit Book";
+}
+
+<h2>
+    <a href="@Url.Action("Index", "Admin")" class="btn btn-secondary mb-3">
+        <i class="fas fa-arrow-left"></i> Back
+    </a>
+</h2>
+@using (Html.BeginForm("Edit", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.BookID)
+
+    <div class="form-group">
+        <label>Title</label>
+        @Html.TextBoxFor(model => model.title, new { @class = "form-control", required = "required" })
+    </div>
+
+    <div class="form-group">
+        <label>Author</label>
+        @Html.TextBoxFor(model => model.author, new { @class = "form-control", required = "required" })
+    </div>
+
+    <div class="form-group">
+        <label>Price</label>
+        @Html.TextBoxFor(model => model.price, new { @class = "form-control", required = "required", type = "number" })
+    </div>
+
+    <div class="form-group">
+        <label>Stock</label>
+        @Html.TextBoxFor(model => model.stock, new { @class = "form-control", required = "required", type = "number" })
+    </div>
+
+    <div class="form-group">
+        <label>Category</label>
+        @Html.DropDownListFor(model => model.CategoryID, (SelectList)ViewBag.CategoryList, "Chọn thể loại", new { @class = "form-control", required = "required" })
+    </div>
+
+    <div class="form-group">
+        <label>Image</label>
+        <input type="file" name="BookImage" class="form-control" />
+    </div>
+    <div class="form-group mt-2">
+        <img id="preview" src="@Url.Content(Model.Book_Image)" alt="Xem trước ảnh" style="max-width: 150px; display: none; border-radius: 5px; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);" />
+    </div>
+
+    <!-- Khu vực hiển thị ảnh xem trước -->
+    <div class="form-group mt-2">
+        <img id="preview" src="@Url.Content(Model.Book_Image)" alt="Preview Image" style="max-width: 150px; display: none; border-radius: 5px; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);" />
+    </div>
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var output = document.getElementById('preview');
+                output.src = reader.result;
+                output.style.display = 'block'; // Hiển thị ảnh khi đã tải xong
+            };
+            reader.readAsDataURL(event.target.files[0]); // Đọc file ảnh
+        }</script>
+    <button type="submit" class="btn btn-success">Save</button>
+<script>
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('preview');
+            output.src = reader.result;
+            output.style.display = 'block';
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }</script>
+}

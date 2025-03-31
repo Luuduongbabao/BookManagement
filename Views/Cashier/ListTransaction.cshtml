@@ -1,0 +1,93 @@
+﻿@model List<BookManagement.Models.Transaction>
+
+@{
+    ViewBag.Title = "List of Transactions";
+}
+
+<h2>Danh Sách Giao Dịch</h2>
+<h2>
+    <a href="@Url.Action("ListOrder", "Cashier")" class="btn btn-secondary mb-3">
+        <i class="fas fa-arrow-left"></i>Back
+    </a>
+</h2>
+<div class="mb-3">
+    <input type="text" id="searchBox" class="form-control" placeholder="🔍 Search">
+</div>
+<!-- Bộ lọc giao dịch -->
+<div class="mb-3">
+    <a href="@Url.Action("ListTransaction", "Cashier")" class="btn btn-secondary">🔄 All</a>
+    <a href="@Url.Action("ListTransaction", "Cashier", new { paymentMethod = "Cash" })" class="btn btn-success">💵 Cash Transaction</a>
+    <a href="@Url.Action("ListTransaction", "Cashier", new { paymentMethod = "Credit Card" })" class="btn btn-primary">💳 Credit Card Transaction</a>
+    <a href="@Url.Action("ListTransaction", "Cashier", new { paymentMethod = "Online Banking" })" class="btn btn-warning">🏦 Online Banking Transaction</a>
+</div>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Transaction ID</th>
+            <th>Order ID</th>
+            <th>Cashier ID</th>
+            <th>Total</th>
+            <th>Payment Method</th>
+            <th>Transaction Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var transaction in Model)
+        {
+            <tr>
+                <td>@transaction.transaction_id</td>
+                <td>@transaction.Order_ID</td>
+                <td>@transaction.cashier_id</td>
+                <td>@transaction.amount</td>
+                <td>@transaction.payment_method</td>
+                <td>@(transaction.TransactionDate.HasValue ? transaction.TransactionDate.Value.ToString("dd/MM/yyyy") : "N/A")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    document.getElementById("searchBox").addEventListener("keyup", function () {
+        var keyword = this.value.toLowerCase();
+        var rows = document.querySelectorAll("table tbody tr");
+
+        rows.forEach(row => {
+            var transactionId = row.cells[0].textContent.toLowerCase();
+            var orderId = row.cells[1].textContent.toLowerCase();
+            var cashierId = row.cells[2].textContent.toLowerCase();
+            var totalAmount = row.cells[3].textContent.toLowerCase();
+            var paymentMethod = row.cells[4].textContent.toLowerCase();
+            var transactionDate = row.cells[5].textContent.toLowerCase();
+
+            // Tìm kiếm theo bất kỳ cột nào trong bảng
+            row.style.display = (transactionId.includes(keyword) ||
+                orderId.includes(keyword) ||
+                cashierId.includes(keyword) ||
+                totalAmount.includes(keyword) ||
+                paymentMethod.includes(keyword) ||
+                transactionDate.includes(keyword)) ? "" : "none";
+        });
+    });
+</script>
+
+<style>
+    table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+</style>

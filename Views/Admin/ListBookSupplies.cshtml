@@ -1,0 +1,85 @@
+﻿@model IEnumerable<BookManagement.Models.BookSupply>
+
+@{
+    ViewBag.Title = "Book Suppliers List";
+}
+
+<h2>
+    <a href="@Url.Action("ListSuppliers", "Admin")" class="btn btn-secondary mb-3">
+        <i class="fas fa-arrow-left"></i> Back
+    </a>
+</h2>
+<div class="col-md-4 mb-3">
+    <input type="text" class="form-control" id="searchBox" placeholder="🔍 Search ..." onkeyup="searchBook()">
+</div>
+<div class="add-supplier">
+    <a href="@Url.Action("CreateBookSupplies", "Admin")" class="btn btn-primary">Add New</a>
+</div>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Supplier ID</th>
+            <th>Book ID</th>
+            <th>Stock</th>
+            <th>Price</th>
+            <th>Supply Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var supply in Model)
+        {
+            <tr>
+                <td>@supply.Supply_id</td>
+                <td>@supply.supplier_id</td>
+                <td>@supply.book_id</td>
+                <td>@supply.quantity</td>
+                <td>@supply.price</td>
+                <td>@supply.DateSuppliers</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    document.getElementById('searchBox').addEventListener('keyup', function () {
+        let searchText = this.value.toLowerCase(); 
+        let rows = document.querySelectorAll("table tbody tr");  
+        rows.forEach(row => {
+            let supplyId = row.children[0].innerText.toLowerCase();
+            let supplierId = row.children[1].innerText.toLowerCase();
+            let bookId = row.children[2].innerText.toLowerCase();
+            let quantity = row.children[3].innerText.toLowerCase();
+            let price = row.children[4].innerText.toLowerCase();
+            let dateSuppliers = row.children[5].innerText.toLowerCase();
+            row.style.display = (supplyId.includes(searchText) ||
+                supplierId.includes(searchText) ||
+                bookId.includes(searchText) ||
+                quantity.includes(searchText) ||
+                price.includes(searchText) ||
+                dateSuppliers.includes(searchText)) ? "" : "none";
+        });
+    });
+</script>
+<style>
+    table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+</style>
+

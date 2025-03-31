@@ -1,0 +1,199 @@
+﻿@{
+    ViewBag.Title = "Introduction";
+    ViewBag.Message = "Explore the World of Knowledge with Online Bookstore!";
+}
+
+<main aria-labelledby="title">
+    <div class="container my-5">
+        <!-- Tiêu đề trang -->
+        <header class="text-center mb-4">
+            <h2 id="title" class="fw-bold text-primary display-4">@ViewBag.Title</h2>
+            <p class="lead text-secondary">@ViewBag.Message</p>
+            <hr class="w-50 mx-auto border-primary">
+        </header>
+
+        <!-- Grid Giới thiệu -->
+        <section class="row g-4">
+            <div class="col-md-6">
+                <div class="card bg-light shadow-lg border-0">
+                    <div class="card-body text-center p-4">
+                        <h3 class="text-success fw-bold">📚 Online Bookstore - Read to Change</h3>
+                        <p class="text-dark">
+                            More than<strong>10 years</strong> alongside readers, Online Bookstore not only sells books but also spreads knowledge and inspires a love for reading
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card bg-primary text-white shadow-lg border-0">
+                    <div class="card-body text-center p-4">
+                        <h3>📍 Location</h3>
+                        <p><strong>123 XYZ Street, Ho Chi Minh City</strong></p>
+                        <a href="@Url.Action("Contact", "Book")" class="btn btn-light mt-2">📞 Contact us now</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-5">
+            <h3 class="text-center fw-bold text-primary mb-4">🌟 Core Values 🌟</h3>
+            <div class="col-md-4">
+                <div class="card shadow-lg border-0 text-center">
+                    <h4>📖 Knowledge</h4>
+                    <p>A diverse collection of books to expand your understanding.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-lg border-0 text-center">
+                    <h4>🎯 Quality</h4>
+                    <p>Authentic books with carefully selected content.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-lg border-0 text-center">
+                    <h4>💖 Community</h4>
+                    <p>Connecting readers through events and workshops.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-5">
+            <h3 class="fw-bold text-center text-success">💬 Reviews from Readers</h3>
+            <div class="row g-4 mt-4">
+                <div class="col-md-4">
+                    <div class="card shadow-lg border-0 p-3">
+                        <blockquote class="text-center">
+                            "Online Bookstore always has great books and excellent service!"
+                            <strong>- Lan Anh</strong>
+                        </blockquote>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card shadow-lg border-0 p-3">
+                        <blockquote class="text-center">
+                            "A comfortable reading space and friendly staff."
+                            <strong>- Minh Hoàng</strong>
+                        </blockquote>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card shadow-lg border-0 p-3">
+                        <blockquote class="text-center">
+                            "Fast delivery and lots of attractive promotions!"
+                            <strong>- Thùy Dung</strong>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-5">
+            <h3 class="fw-bold text-center text-primary">✅ Why Choose ABC Bookstore?</h3>
+            <div class="row g-4 mt-4">
+                <div class="col-md-6">
+                    <div class="card shadow-lg border-0 p-4">
+                        <h4 class="text-success">📦 Wide Range of Books</h4>
+                        <p>Our collection includes over 20,000 books across various genres.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card shadow-lg border-0 p-4">
+                        <h4 class="text-danger">⚡ Excellent Service</h4>
+                        <p>Fast delivery, attractive promotions, and easy returns.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-5">
+            <h3 class="fw-bold text-center text-success">📰 News & Events</h3>
+            <div class="row g-4 mt-4">
+                <div class="col-md-4">
+                    <div class="card shadow-lg border-0">
+                        <h4 class="text-success">New Event</h4>
+                        <div class="card-body">
+                            <h5 class="card-title">🎉 The Biggest Book Fair of 2025</h5>
+                            <p class="card-text">Join the biggest book fair of the year with thousands of special offers!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card shadow-lg border-0">
+                        <h4 class="text-success">Special Offers</h4>
+                        <div class="card-body">
+                            <h5 class="card-title">🔥 Special Discount for April</h5>
+                            <p class="card-text">Buy books with discounts of up to 50% this month!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card shadow-lg border-0">
+                        <h4 class="text-success">Author Meet-up</h4>
+                        <div class="card-body">
+                            <h5 class="card-title">📖 Meet Famous Authors</h5>
+                            <p class="card-text">A chance to meet and get books signed by famous authors.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-5 text-center">
+            <h3 class="fw-bold text-primary">💡 Reader's Corner</h3>
+            <p class="text-muted">Genuine shares and experiences from book lovers.</p>
+            <div class="row g-4 mt-4">
+                <div class="col-md-6">
+                    <div class="card shadow-lg border-0 p-3">
+                        <blockquote class="text-center">
+                            "I have found many great books at ABC Bookstore. The service is excellent!"
+                            <strong>- Nguyễn Văn A</strong>
+                        </blockquote>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card shadow-lg border-0 p-3">
+                        <blockquote class="text-center">
+                            "The reading space is quiet, and new books are updated regularly!"
+                            <strong>- Trần Thị B</strong>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+<style>
+    body {
+        background-color: #f9fafb;
+        color: #333;
+    }
+
+    h2 {
+        font-size: 2.8rem;
+        font-weight: bold;
+        text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .card {
+        transition: all 0.3s ease-in-out;
+        border-radius: 15px;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+        font-weight: bold;
+        border-radius: 50px;
+        padding: 12px 24px;
+        transition: all 0.3s ease-in-out;
+    }
+    .btn-success:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+    }
+</style>

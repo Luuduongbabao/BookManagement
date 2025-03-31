@@ -1,0 +1,54 @@
+﻿@using BookManagement.Models
+@model Product
+
+<div class="product-detail">
+    <div class="product-image">
+        <img src="@Model.Product_Image" alt="@Model.ProductName" onerror="this.src='/Images/default-product.png';" />
+    </div>
+    <div class="product-info">
+        <h2>@Model.ProductName</h2>
+        <p><strong>Price:</strong> @Model.ProductPrice.ToString("N0") đ</p>
+        @*<p><strong>Số lượng còn:</strong> @Model.ProductStock</p>*@
+        <a href="@Url.Action("Index", "Book")" class="back-btn">Back</a>
+        @*<a href="@Url.Action("AddToCartProduct", "Cart")" class="back-btn">Thêm vô giỏ hàng</a>*@
+    </div>
+</div>
+
+<style>
+    .product-detail {
+        display: flex;
+        gap: 20px;
+        padding: 20px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-image img {
+        width: 200px;
+        height: auto;
+        border-radius: 5px;
+    }
+
+    .product-info {
+        flex: 1;
+    }
+
+    .buy-btn, .back-btn {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 15px;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .buy-btn {
+        background: #28a745;
+        color: white;
+    }
+
+    .back-btn {
+        background: #007bff;
+        color: white;
+    }
+</style>

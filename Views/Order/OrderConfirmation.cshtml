@@ -1,0 +1,81 @@
+﻿@model BookManagement.Models.Order
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hóa Đơn Đơn Hàng</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Chiều cao toàn màn hình */
+        }
+
+        .invoice-container {
+            max-width: 600px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center; /* Căn giữa nội dung bên trong */
+        }
+
+        .invoice-header {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .invoice-details {
+            line-height: 1.6;
+            font-size: 16px;
+            text-align: left; /* Giữ thông tin chi tiết căn trái */
+        }
+
+        .invoice-footer {
+            margin-top: 20px;
+        }
+
+        .btn-home {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+            .btn-home:hover {
+                background: #0056b3;
+            }
+    </style>
+
+</head>
+
+<body>
+    <div class="invoice-container">
+        <div class="invoice-header">ORDER INVOICE</div>
+        
+        <div class="invoice-details">
+            <p><strong>Order ID:</strong> @Model.OrderID</p>
+            <p><strong>Customer Name:</strong> @ViewBag.CustomerName</p>
+            <p><strong>Total:</strong> @ViewBag.TotalPrice VNĐ</p>
+            <p><strong>Payment Method:</strong> @Model.payment_method</p>
+            <p><strong>Shipping Address:</strong> @Model.ShippingAddress</p>
+        </div>
+
+        <div class="invoice-footer">
+            <a href="@Url.Action("Index", "Book")" class="btn-home">Go back to home page</a>
+        </div>
+    </div>
+</body>
+</html>

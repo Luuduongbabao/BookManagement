@@ -1,0 +1,107 @@
+﻿@model IEnumerable<BookManagement.Models.Supplier>
+
+@{
+    ViewBag.Title = "Lis of Suppliers";
+}
+
+<h2>
+    <a href="@Url.Action("AdminDashboard", "Admin")" class="btn btn-secondary mb-3">
+        <i class="fas fa-arrow-left"></i> Back
+    </a>
+</h2>
+<!-- Thêm một nút để thêm nhà cung cấp mới -->
+<div class="add-supplier">
+    <a href="@Url.Action("CreateSupplier", "Admin")" class="btn btn-primary">Add new</a>
+</div>
+
+<div class="supplier-actions">
+    <a href="@Url.Action("ListBookSupplies", "Admin")" class="btn btn-info">Books Supplies</a>
+    <a href="@Url.Action("ListProductSupplies", "Admin")" class="btn btn-info">Products Supplies</a>
+</div>
+
+<!-- Hiển thị bảng danh sách nhà cung cấp -->
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Supplier ID</th>
+            <th>Supplier Name</th>
+            <th>Address</th>
+            <th>Phone</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var supplier in Model)
+        {
+            <tr>
+                <td>@supplier.supplier_id</td>
+                <td>@supplier.supplier_name</td>
+                <td>@supplier.supplier_email</td>
+                <td>@supplier.phone</td>
+                <td>@supplier.address</td>
+                <td>
+                    @Html.ActionLink("Edit", "EditSupplier", "Admin", new { id = supplier.supplier_id.Trim() }, new { @class = "btn btn-warning" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<style>
+    .add-supplier {
+        margin-bottom: 20px;
+    }
+
+    .btn {
+        padding: 8px 16px;
+        border-radius: 5px;
+        text-decoration: none;
+    }
+
+    .btn-primary {
+        background-color: #3498db;
+        color: white;
+    }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+    .btn-warning {
+        background-color: #f39c12;
+        color: white;
+    }
+
+        .btn-warning:hover {
+            background-color: #e67e22;
+        }
+
+    .btn-danger {
+        background-color: #e74c3c;
+        color: white;
+    }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+    table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+</style>

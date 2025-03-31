@@ -1,0 +1,240 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONLINE BOOKSTORE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: #008CBA;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo a {
+            color: white;
+            font-size: 24px;
+            text-decoration: none;
+        }
+
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            padding: 0;
+        }
+
+            nav ul li {
+                padding: 10px;
+            }
+
+        .user-menu {
+            display: flex;
+        }
+
+            .user-menu a {
+                margin-left: 15px;
+                color: white;
+                text-decoration: none;
+            }
+
+        .banner img {
+            width: 100%;
+            height: auto;
+        }
+
+        .container {
+            display: flex;
+        }
+
+        .sidebar {
+            width: 20%;
+            padding: 10px;
+            background: #f5f5f5;
+        }
+
+        .book-list {
+            width: 80%;
+            padding: 10px;
+        }
+
+        .book-card {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 10px;
+            width: 200px;
+            display: inline-block;
+            text-align: center;
+        }
+
+            .book-card img {
+                width: 100%;
+                height: auto;
+            }
+
+        .buy-btn {
+            background: #ff5722;
+            color: white;
+            padding: 5px 10px;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+            .buy-btn:hover {
+                background: #e64a19;
+            }
+
+        .user-menu a {
+            display: flex;
+            align-items: center;
+        }
+
+            .user-menu a + a {
+                border-left: 2px solid black;
+                padding-left: 10px;
+                margin-left: 10px;
+            }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <a href="@Url.Action("Index", "Book")">📚 🅾🅽🅻🅸🅽🅴 ​ 🅱🅾🅾🅺🆂🆃🅾🆁🅴</a>
+        </div>
+
+
+
+        <div class="header-right">
+            <nav>
+                <ul>
+                    <li><a href="@Url.Action("Index", "Book")">Home</a></li>
+                    <li><a href="@Url.Action("About", "Book")">Introduce </a></li>
+                    <li><a href="@Url.Action("Contact", "Book")">Contact</a></li>
+                </ul>
+            </nav>
+            <!-- 🛎️ Thêm chuông thông báo ở đây -->
+            <!--<div class="dropdown">
+                <button class="btn btn-outline-primary position-relative" id="notificationBell" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-bell"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" id="notificationCount">0</span>
+                </button>
+
+                <div class="dropdown-menu dropdown-menu-end p-3" id="notificationList" style="min-width: 300px;">
+                    <h6 class="dropdown-header">📢 Thông báo</h6>
+                    <div id="notificationsContent">
+                        <p class="text-muted text-center">Không có thông báo nào</p>
+                    </div>
+                </div>
+            </div>-->
+            <!-- 🔔 Kết thúc chuông thông báo -->
+            <div class="user-menu">
+                @if (Session["UserName"] != null)
+                {
+                    <p>Hello, @Session["UserName"]!</p>
+                    <a href="@Url.Action("Logout", "Account")">
+                        <img src="~/Images/logout-icon.png" width="30">
+                    </a>
+
+                }
+                else
+                {
+                    <a href="@Url.Action("Login", "Account")">
+                        <img src="~/Images/login-icon.jpg" width="30">
+                    </a>
+                }
+
+                <div class="cart-icon">
+                    @{
+                        var cart = Session["Cart"] as List<object> ?? new List<object>();
+                        int totalItems = cart.Count; // Đếm tổng số phần tử trong giỏ hàng
+                    }
+                    <a href="@Url.Action(Session["UserName"] != null ? "Index" : "Login", "Account")" class="cart-link">
+                        <img src="~/Images/cart-icon.png" width="30" />
+                        <span class="cart-count">(@totalItems)</span>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <main>
+        @RenderBody()
+    </main>
+
+    <footer>
+        <p>&copy; 2025 ONLINE BOOKSTORE. All rights reserved.</p>
+    </footer>
+
+    @RenderSection("Scripts", required: false)
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var notifications = @Html.Raw(Json.Encode(Session["LowStockWarnings"]));
+
+        var bell = document.getElementById("notificationBell");
+        var countBadge = document.getElementById("notificationCount");
+        var notificationsContent = document.getElementById("notificationsContent");
+
+        if (notifications && notifications.length > 0) {
+            countBadge.textContent = notifications.length;
+            countBadge.classList.remove("d-none");
+
+            notificationsContent.innerHTML = "";
+            notifications.forEach(book => {
+                notificationsContent.innerHTML += `<div class="alert alert-warning">
+                    <strong>📖 ${book.title}</strong> (ID: ${book.BookID}) chỉ còn <strong>${book.stock}</strong> cuốn.
+                </div>`;
+            });
+        } else {
+            countBadge.classList.add("d-none");
+            notificationsContent.innerHTML = `<p class="text-muted text-center">Không có thông báo nào</p>`;
+        }
+    });
+    </script>
+</body>
+</html>
+
+<style>
+    .cart-icon {
+        position: relative;
+        display: inline-block;
+    }
+
+    /*.cart-icon img {
+            width: 40px;*/ /* Điều chỉnh kích thước hình giỏ hàng */
+    /*}*/
+
+    .cart-count {
+        position: absolute;
+        top: -5px;
+        right: -10px;
+        background-color: red;
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        text-align: center;
+        line-height: 20px;
+    }
+</style>
+
+

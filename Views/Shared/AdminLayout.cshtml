@@ -1,0 +1,247 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+</head>
+<body>
+    <div class="admin-wrapper">
+        <aside class="sidebar">
+            <h2>📚 Bookstore Management</h2>
+            <ul>
+                <li><a href="@Url.Action("AdminDashboard", "Admin")">🏠 Dashboard</a></li>
+                <li class="dropdown">
+                    <button class="dropdown-btn">📖 Book and Other Products Management</button>
+                    <ul class="dropdown-menu">
+                        <li><a href="@Url.Action("Index", "Admin")"><i class="fas fa-book"></i> Book</a></li>
+                        <li><a href="@Url.Action("ListCategory", "Admin")"><i class="fas fa-book"></i> Book Category</a></li>
+                        <li><a href="@Url.Action("ListProduct", "Admin")"><i class="fas fa-book"></i> Product</a></li>
+                    </ul>
+                </li>
+                <li><a href="@Url.Action("ListCustomer", "Admin")">👥 Customer Management</a></li>
+                <li><a href="@Url.Action("ListCashier", "Admin")">👥 Cashier Management</a></li>
+                <li><a href="@Url.Action("ListOrder", "Admin")">🛒 Order Management</a></li>
+                <li><a href="@Url.Action("ListSuppliers", "Admin")"><i class="fas fa-truck"></i> Supplier</a></li>
+                <li><a href="@Url.Action("Logout", "Account")" class="logout">🚪 Logout</a></li>
+            </ul>
+        </aside>
+
+        <div class="main-content">
+            <header class="admin-header">
+
+                <h1>📊 Admin Page</h1>
+                <div class="dropdown">
+                    <button class="btn btn-outline-primary position-relative" id="notificationBell" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-bell"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" id="notificationCount">0</span>
+                    </button>
+
+                    <div class="dropdown-menu dropdown-menu-end p-3" id="notificationList" style="min-width: 300px;">
+                        <h6 class="dropdown-header">📢 Notifications</h6>
+                        <div id="notificationsContent">
+                            <p class="text-muted text-center">No notifications</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- 🔔 Kết thúc chuông thông báo -->
+                @*<div class="admin-actions">
+                        <a href="@Url.Action("Profile", "Admin")" class="profile-btn">👤 Admin</a>
+                    </div>*@
+            </header>
+
+            <section class="admin-body">
+                @RenderBody()
+            </section>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    var notifications = @Html.Raw(Json.Encode(Session["LowStockWarnings"]));
+
+    var bell = document.getElementById("notificationBell");
+    var countBadge = document.getElementById("notificationCount");
+    var notificationsContent = document.getElementById("notificationsContent");
+
+    if (notifications && notifications.length > 0) {
+        countBadge.textContent = notifications.length;
+        countBadge.classList.remove("d-none");
+
+        notificationsContent.innerHTML = "";
+        notifications.forEach(item => {
+            // Ensure item.ID exists, otherwise display "Unknown"
+            let itemID = item.ID ? item.ID : "Unknown";
+            let type = item.type === "book" ? "📖 Book" : "🛍 Product";
+
+            notificationsContent.innerHTML += `<div class="alert alert-warning notification-item">
+                <strong>${type}: ${item.title}</strong> only has <strong>${item.stock}</strong> left.
+            </div>`;
+        });
+    } else {
+        countBadge.classList.add("d-none");
+        notificationsContent.innerHTML = `<p class="text-muted text-center">No notifications</p>`;
+    }
+});
+    </script>
+</body>
+</html>
+
+<style>
+    /* Reset mặc định */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+
+    body {
+        background: #f4f4f4;
+    }
+
+    /* Bố cục chung */
+    .admin-wrapper {
+        display: flex;
+        height: 100vh;
+    }
+
+    /* Sidebar (Cột trái) */
+    .sidebar {
+        width: 250px;
+        background: #2C3E50;
+        color: white;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+            .sidebar ul li {
+                margin: 10px 0;
+            }
+
+                .sidebar ul li a {
+                    display: block;
+                    padding: 10px;
+                    color: white;
+                    text-decoration: none;
+                    transition: 0.3s;
+                    border-radius: 5px;
+                }
+
+                    .sidebar ul li a:hover {
+                        background: #34495E;
+                    }
+
+        .sidebar .logout {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+    .dropdown {
+        position: relative;
+    }
+
+    .dropdown-btn {
+        background: #34495E;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        text-align: left;
+        border-radius: 5px;
+        transition: background 0.3s;
+    }
+
+        .dropdown-btn:hover {
+            background: #1abc9c;
+        }
+
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        background: #34495E;
+        left: 0;
+        top: 100%;
+        list-style: none;
+        padding: 0;
+        margin-top: 10px;
+        border-radius: 5px;
+        width: 100%;
+    }
+
+        .dropdown-menu li a {
+            padding: 10px;
+            color: white;
+            text-decoration: none;
+            display: block;
+        }
+
+            .dropdown-menu li a:hover {
+                background: #1abc9c;
+            }
+
+    .dropdown.active .dropdown-menu {
+        display: block;
+    }
+    /* Nội dung chính */
+    .main-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Header */
+    .admin-header {
+        background: #3498DB;
+        color: white;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .admin-actions .profile-btn {
+        background: white;
+        color: #3498DB;
+        padding: 8px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+        .admin-actions .profile-btn:hover {
+            background: #e3f2fd;
+        }
+
+    /* Nội dung chính */
+    .admin-body {
+        padding: 20px;
+        background: white;
+        flex: 1;
+        overflow-y: auto;
+        box-shadow: 0px -1px 5px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        // Toggle dropdown menu on button click
+        $(".dropdown-btn").click(function () {
+            $(this).parent().toggleClass("active");
+        });
+    });
+</script>
